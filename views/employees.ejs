@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список сотрудников</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Список сотрудников</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>ФИО</th>
+                <th>Отдел</th>
+                <th>Должность</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% employees.forEach((employee, index) => { %>
+                <tr>
+                    <td><%= index + 1 %></td>
+                    <td><%= employee.fio %></td>
+                    <td><%= employee.department %></td>
+                    <td><%= employee.position %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>
