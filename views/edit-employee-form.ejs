@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактирование сотрудника</title>
+    <link rel="stylesheet" href="/styles.css"> 
+</head>
+<body>
+    <h1>Редактирование сотрудника</h1>
+    <form action="/edit/<%= employee.id %>" method="POST" enctype="application/x-www-form-urlencoded">
+        
+        <fieldset>
+            <legend>Личная информация</legend>
+            <label for="last_name">Фамилия:</label>
+            <input type="text" name="employeeData[last_name]" value="<%= employee.last_name %>" required>
+
+            <label for="first_name">Имя:</label>
+            <input type="text" name="employeeData[first_name]" value="<%= employee.first_name %>" required>
+
+            <label for="middle_name">Отчество:</label>
+            <input type="text" name="employeeData[middle_name]" value="<%= employee.middle_name %>">
+
+            <label for="passport_number">Паспорт:</label>
+            <input type="text" name="employeeData[passport_number]" value="<%= employee.passport_number %>" required>
+
+            <label for="phone_number">Телефон:</label>
+            <input type="text" name="employeeData[phone_number]" value="<%= employee.phone_number %>" required>
+
+            <label for="email">Email:</label>
+            <input type="email" name="employeeData[email]" value="<%= employee.email %>" required>
+
+            <label for="telegram">Telegram:</label>
+            <input type="text" name="employeeData[telegram]" value="<%= employee.telegram %>">
+        </fieldset>
+
+        <fieldset>
+            <legend>Адрес</legend>
+            <label for="city">Город:</label>
+            <input type="text" name="addressData[city]" value="<%= employee.city %>" required>
+
+            <label for="street">Улица:</label>
+            <input type="text" name="addressData[street]" value="<%= employee.street %>" required>
+
+            <label for="house_number">Дом:</label>
+            <input type="text" name="addressData[house_number]" value="<%= employee.house_number %>" required>
+        </fieldset>
+
+        <fieldset>
+            <legend>Должность и отдел</legend>
+            <label for="departmentName">Департамент:</label>
+            <input type="text" name="departmentName" value="<%= employee.department %>" required>
+
+            <label for="positionName">Должность:</label>
+            <input type="text" name="positionName" value="<%= employee.position %>" required>
+
+            <label for="salary">Зарплата:</label>
+            <input type="number" name="employeeData[salary]" value="<%= employee.salary %>" required>
+
+            <label for="hire_date">Дата найма:</label>
+            <input type="date" name="employeeData[hire_date]" value="<%= employee.hire_date.toISOString().split('T')[0] %>" required>
+        </fieldset>
+
+        <button type="submit">Сохранить изменения</button>
+    </form>
+</body>
+</html>
