@@ -34,6 +34,7 @@
 </head>
 <body>
     <h1>Список сотрудников</h1>
+    <input type="text" id="searchInput" placeholder="Поиск по ФИО...">
     <table>
         <thead>
             <tr>
@@ -44,11 +45,11 @@
                 <th>Действие</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="employeeTable">
             <% employees.forEach((employee, index) => { %>
                 <tr>
                     <td><%= index + 1 %></td>
-                    <td><%= employee.fio %></td>
+                    <td class="employeeFIO"><%= employee.fio %></td>
                     <td><%= employee.department %></td>
                     <td><%= employee.position %></td>
                     <td>
@@ -61,5 +62,20 @@
             <% }); %>
         </tbody>
     </table>
+    <script>
+        document.getElementById("searchInput").addEventListener("input", function () {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll("#employeeTable tr");
+
+            rows.forEach(row => {
+                let name = row.querySelector(".employeeFIO").textContent.toLowerCase();
+                if (name.includes(filter)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        });
+    </script>
 </body>
 </html>
