@@ -34,3 +34,14 @@ exports.createEmployee = async (req, res) => {
     res.status(500).json({ message: "Ошибка сервера", error });
   }
 };
+
+exports.deleteEmployee = async (req, res) => {
+  const id = parseInt(req.params.id);
+  try {
+    const employee = await Employee.delete(id);
+    res.redirect("/employees");
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Ошибка сервера", error });
+  }
+};

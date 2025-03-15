@@ -19,6 +19,17 @@
         th {
             background-color: #f4f4f4;
         }
+        .delete-button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .delete-button:hover {
+            background-color: #cc0000;
+        }
     </style>
 </head>
 <body>
@@ -30,6 +41,7 @@
                 <th>ФИО</th>
                 <th>Отдел</th>
                 <th>Должность</th>
+                <th>Действие</th>
             </tr>
         </thead>
         <tbody>
@@ -39,6 +51,12 @@
                     <td><%= employee.fio %></td>
                     <td><%= employee.department %></td>
                     <td><%= employee.position %></td>
+                    <td>
+                        <form action="/delete/<%= employee.id %>" method="POST">
+                            <button type="submit" class="delete-button">Удалить</button>
+                        </form>
+                        
+                    </td>
                 </tr>
             <% }); %>
         </tbody>
