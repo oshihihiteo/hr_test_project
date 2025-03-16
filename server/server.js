@@ -8,7 +8,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use("/", employeesRoutes);
 
-app.set("view engine", "ejs");
 app.use(express.static("public"));
 
 const PORT = process.env.PORT || 5000;

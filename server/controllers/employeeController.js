@@ -2,11 +2,12 @@ const Employee = require("../models/employeeModel");
 const Address = require("../models/addressModel");
 const Department = require("../models/departmentModel");
 const Position = require("../models/positionModel");
+const { mergeProps } = require("vue");
 
 exports.getEmployees = async (req, res) => {
   try {
     const employees = await Employee.getAll();
-    res.render("employees", { employees });
+    res.status(200).json({ employees });
   } catch (error) {
     console.error("Ошибка при получении сотрудников:", error);
     res.status(500).send("Ошибка сервера");
@@ -32,7 +33,7 @@ exports.createEmployee = async (req, res) => {
       positionId
     );
 
-    res.redirect("/employees");
+    res.status(200).json({ message: "Сотрудник добавлен" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Ошибка сервера", error });
@@ -44,7 +45,7 @@ exports.deleteEmployee = async (req, res) => {
 
   try {
     const employee = await Employee.delete(id);
-    res.redirect("/employees");
+    res.status(200).json({ message: "Сотрудник уволен" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Ошибка сервера", error });
@@ -79,7 +80,7 @@ exports.editEmployee = async (req, res) => {
       departmentId,
       positionId
     );
-    res.redirect("/employees");
+    res.status(200).jsom({ message: "Данные сотрудника изменены" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Ошибка сервера", error });

@@ -1,5 +1,5 @@
 const pgp = require("pg-promise")();
-require("dotenv").config();
+require("dotenv").config({ path: "./server/.env" });
 
 const db = pgp({
   host: process.env.DB_HOST,
