@@ -39,6 +39,15 @@
         />
       </div>
       <div>
+        <label for="birthday">Дата рождения:</label>
+        <input
+          type="date"
+          v-model="employeeData.birthday"
+          id="birthday"
+          required
+        />
+      </div>
+      <div>
         <label for="salary">Зарплата:</label>
         <input
           type="number"
@@ -106,6 +115,10 @@
         />
       </div>
       <div>
+        <label for="apartment">Квартира:</label>
+        <input type="text" v-model="addressData.apartment" id="apartment" />
+      </div>
+      <div>
         <label for="department">Отдел:</label>
         <select v-model="departmentName" id="department" required>
           <option
@@ -162,11 +175,15 @@ export default {
         phone_number: this.employee.phone_number,
         email: this.employee.email,
         telegram: this.employee.telegram,
+        birthday: this.employee.birthday
+          ? new Date(this.employee.birthday).toISOString().split("T")[0]
+          : "",
       },
       addressData: {
         city: this.employee.city,
         street: this.employee.street,
         house_number: this.employee.house_number,
+        apartment: this.employee.apartment,
       },
       departmentName: this.employee.department,
       positionName: this.employee.position,

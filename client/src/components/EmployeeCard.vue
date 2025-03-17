@@ -21,14 +21,19 @@
           <p><strong>Зарплата:</strong> {{ employee.salary }}</p>
           <p><strong>Номер паспорта:</strong> {{ employee.passport_number }}</p>
           <p>
-            <strong>Адрес:</strong> {{ employee.city }} {{ employee.street }}
-            {{ employee.house_number }}
+            <strong>Дата рождения:</strong> {{ formatDate(employee.birthday) }}
+          </p>
+          <p>
+            <strong>Адрес:</strong>
+            {{
+              `г.${employee.city}, ул.${employee.street}, д.${employee.house_number}`
+            }}{{ employee.apartment ? `, кв. ${employee.apartment}` : "" }}
           </p>
         </div>
       </div>
 
       <div class="card-section">
-        <p class="card-block">Контактная информация</p>
+        <p class="card-block"><strong>Контактная информация</strong></p>
         <div class="card-content">
           <p><strong>Телефон:</strong> {{ employee.phone_number }}</p>
           <p><strong>Email:</strong> {{ employee.email }}</p>
@@ -83,8 +88,10 @@ export default {
         city: "",
         street: "",
         house_number: "",
+        apartment: "",
         departmentName: "",
         positionName: "",
+        birthday: "",
       },
     };
   },
@@ -92,7 +99,6 @@ export default {
     async getEmployee() {
       try {
         const employeeId = this.employeeId;
-        console.log("Вызор метода в ид" + employeeId);
         const response = await axios.get(
           `http://localhost:5000/employees/${this.employeeId}`
         );

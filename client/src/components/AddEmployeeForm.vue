@@ -40,6 +40,15 @@
         />
       </div>
       <div>
+        <label for="birthday">Дата рождения:</label>
+        <input
+          type="date"
+          v-model="employeeData.birthday"
+          id="birthday"
+          required
+        />
+      </div>
+      <div>
         <label for="salary">Зарплата:</label>
         <input type="text" v-model="employeeData.salary" id="salary" required />
       </div>
@@ -101,6 +110,10 @@
           required
         />
       </div>
+      <div>
+        <label for="apartment">Квартира:</label>
+        <input type="text" v-model="addressData.apartment" id="apartment" />
+      </div>
 
       <div>
         <label for="department">Отдел:</label>
@@ -152,11 +165,13 @@ export default {
         phone_number: "",
         email: "",
         telegram: "",
+        birthbay: "",
       },
       addressData: {
         city: "",
         street: "",
         house_number: "",
+        apartment: "",
       },
       departmentName: "",
       positionName: "",

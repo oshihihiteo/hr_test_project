@@ -64,6 +64,7 @@
           <th>Зарплата</th>
           <th>Дата приема</th>
           <th>Номер паспорта</th>
+          <th>Дата рождения</th>
           <th>Адрес</th>
           <th>Контакты</th>
         </tr>
@@ -84,10 +85,12 @@
           <td>{{ employee.salary }}</td>
           <td>{{ formatDate(employee.hire_date) }}</td>
           <td>{{ employee.passport_number }}</td>
+          <td>{{ formatDate(employee.birthday) }}</td>
           <td>
             {{ employee.city }}, ул.{{ employee.street }}, д.{{
               employee.house_number
             }}
+            {{ employee.apartment ? `кв. ${employee.apartment}` : "" }}
           </td>
           <td>
             {{ employee.phone_number }}<br />
