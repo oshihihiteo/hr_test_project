@@ -95,6 +95,7 @@ export default {
           v-for="employee in employees"
           :key="employee.id"
           @click="showEmployeeCard(employee)"
+          :style="{ color: employee.is_employed ? '' : '#ffaaaa' }"
         >
           <td>
             {{

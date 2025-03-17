@@ -14,7 +14,10 @@
         <div class="card-content">
           <p>Отдел {{ employee.department }}, {{ employee.position }}</p>
           <p>Принят на должность {{ formatDate(employee.hire_date) }}</p>
-          <p><strong>Статус:</strong> {{ employee.is_employed }}</p>
+          <p>
+            <strong>Статус:</strong>
+            {{ employee.is_employed ? "Работает" : "Уволен" }}
+          </p>
           <p><strong>Зарплата:</strong> {{ employee.salary }}</p>
           <p><strong>Номер паспорта:</strong> {{ employee.passport_number }}</p>
           <p>
@@ -34,8 +37,20 @@
       </div>
 
       <div class="actions">
-        <button class="edit-btn" @click="toggleEdit">Редактировать</button>
-        <button class="fire-btn" @click="deleteEmployee">Уволить</button>
+        <button
+          class="edit-btn"
+          @click="toggleEdit"
+          v-if="employee.is_employed"
+        >
+          Редактировать
+        </button>
+        <button
+          class="fire-btn"
+          @click="deleteEmployee"
+          v-if="employee.is_employed"
+        >
+          Уволить
+        </button>
       </div>
     </div>
 
@@ -125,21 +140,28 @@ export default {
     },
 
     async deleteEmployee() {
-      prompt("Вы уверены что хотите уволить данного сотрудника?");
-      try {
-        const response = await axios.delete(
-          `http://localhost:5000/delete/${this.employee.id}`
-        );
-        console.log(response.data);
-        this.$emit("update");
-        alert("Данные сотрудника обновлены!");
-      } catch (error) {
-        console.error("Ошибка при добавлении сотрудника:", error);
+      const isConfirmed = confirm(
+        "Вы уверены что хотите уволить данного сотрудника?"
+      );
+
+      if (isConfirmed) {
+        try {
+          const response = await axios.delete(
+            `http://localhost:5000/delete/${this.employee.id}`
+          );
+          console.log(response.data);
+          this.$emit("update");
+          await this.getEmployee();
+        } catch (error) {
+          console.error("Ошибка при удалении сотрудника:", error);
+        }
+      } else {
+        console.log("Удаление отменено");
       }
     },
   },
   mounted() {
-    this.getEmployee(this.employeeId); // Добавьте этот вызов
+    this.getEmployee(this.employeeId);
   },
 };
 </script>
