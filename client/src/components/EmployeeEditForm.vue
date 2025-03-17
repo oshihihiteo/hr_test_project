@@ -132,7 +132,8 @@
           </option>
         </select>
       </div>
-      <button type="submit">Сохранить</button>
+      <br />
+      <button class="btn" type="submit">Сохранить</button>
     </form>
   </div>
 </template>
@@ -167,10 +168,10 @@ export default {
         street: this.employee.street,
         house_number: this.employee.house_number,
       },
-      departmentName: this.employee.department, // Значение для отдела по умолчанию
-      positionName: this.employee.position, // Значение для должности по умолчанию
-      departments: [], // Массив для данных отделов
-      positions: [], // Массив для данных должностей
+      departmentName: this.employee.department,
+      positionName: this.employee.position,
+      departments: [],
+      positions: [],
     };
   },
   setup() {

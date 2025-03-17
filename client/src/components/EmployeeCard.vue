@@ -36,19 +36,11 @@
         </div>
       </div>
 
-      <div class="actions">
-        <button
-          class="edit-btn"
-          @click="toggleEdit"
-          v-if="employee.is_employed"
-        >
+      <div class="form-header">
+        <button class="btn" @click="toggleEdit" v-if="employee.is_employed">
           Редактировать
         </button>
-        <button
-          class="fire-btn"
-          @click="deleteEmployee"
-          v-if="employee.is_employed"
-        >
+        <button class="btn" @click="deleteEmployee" v-if="employee.is_employed">
           Уволить
         </button>
       </div>
@@ -165,8 +157,4 @@ export default {
   },
 };
 </script>
-<style scoped>
-.close-btn:hover {
-  color: #333;
-}
-</style>
+<style scoped></style>

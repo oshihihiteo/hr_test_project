@@ -102,7 +102,6 @@
         />
       </div>
 
-      <!-- Отдел - выпадающий список -->
       <div>
         <label for="department">Отдел:</label>
         <select v-model="departmentName" id="department" required>
@@ -116,7 +115,6 @@
         </select>
       </div>
 
-      <!-- Должность - выпадающий список -->
       <div>
         <label for="position">Должность:</label>
         <select v-model="positionName" id="position" required>
@@ -129,8 +127,8 @@
           </option>
         </select>
       </div>
-
-      <button type="submit">Добавить сотрудника</button>
+      <br />
+      <button class="btn" type="submit">Добавить сотрудника</button>
     </form>
   </div>
 </template>
@@ -143,7 +141,7 @@ import Inputmask from "inputmask";
 export default {
   data() {
     return {
-      isFormVisible: true, // Форма изначально видима
+      isFormVisible: true,
       employeeData: {
         last_name: "",
         first_name: "",
@@ -221,7 +219,7 @@ export default {
       this.closeForm;
     },
     closeForm() {
-      this.$emit("cancel"); // Сообщаем родителю, что нужно закрыть форму
+      this.$emit("cancel");
     },
   },
 };
