@@ -14,10 +14,6 @@ exports.getEmployees = async (req, res) => {
   }
 };
 
-exports.createEmployeeForm = async (req, res) => {
-  res.render("create-employee-form");
-};
-
 exports.createEmployee = async (req, res) => {
   const { employeeData, addressData, departmentName, positionName } = req.body;
 
@@ -52,11 +48,11 @@ exports.deleteEmployee = async (req, res) => {
   }
 };
 
-exports.editEmployeeForm = async (req, res) => {
+exports.getEmployeeById = async (req, res) => {
   const id = parseInt(req.params.id);
   try {
     const employee = await Employee.getEmployee(id);
-    res.render("edit-employee-form", { employee });
+    res.status(200).json({ employee });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Ошибка сервера", error });
@@ -80,9 +76,29 @@ exports.editEmployee = async (req, res) => {
       departmentId,
       positionId
     );
-    res.status(200).jsom({ message: "Данные сотрудника изменены" });
+    res.status(200).json({ message: "Данные сотрудника изменены" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Ошибка сервера", error });
+  }
+};
+
+exports.getDepartments = async (req, res) => {
+  try {
+    const departments = await Department.get();
+    res.status(200).json({ departments });
+  } catch (error) {
+    console.error("Ошибка при получении :", error);
+    res.status(500).send("Ошибка сервера");
+  }
+};
+
+exports.getPositions = async (req, res) => {
+  try {
+    const positions = await Position.get();
+    res.status(200).json({ positions });
+  } catch (error) {
+    console.error("Ошибка при получении :", error);
+    res.status(500).send("Ошибка сервера");
   }
 };

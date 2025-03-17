@@ -1,10 +1,9 @@
 <template>
-  <div class="card" v-if="isFormVisible">
+  <div class="card">
     <div class="form-header">
-      <p><strong>Добавление сотрудника</strong></p>
-      <button class="close-btn" @click="closeForm">✖</button>
+      <p><strong>Редактирование сотрудника</strong></p>
+      <button class="close-btn" @click="$emit('cancel')">✖</button>
     </div>
-
     <form @submit.prevent="submitForm">
       <div>
         <label for="lastName">Фамилия:</label>
@@ -41,7 +40,12 @@
       </div>
       <div>
         <label for="salary">Зарплата:</label>
-        <input type="text" v-model="employeeData.salary" id="salary" required />
+        <input
+          type="number"
+          v-model="employeeData.salary"
+          id="salary"
+          required
+        />
       </div>
       <div>
         <label for="hireDate">Дата приема:</label>
@@ -101,8 +105,6 @@
           required
         />
       </div>
-
-      <!-- Отдел - выпадающий список -->
       <div>
         <label for="department">Отдел:</label>
         <select v-model="departmentName" id="department" required>
@@ -110,13 +112,13 @@
             v-for="department in departments"
             :key="department.name"
             :value="department.name"
+            :selected="department.name"
           >
             {{ department.name }}
           </option>
         </select>
       </div>
 
-      <!-- Должность - выпадающий список -->
       <div>
         <label for="position">Должность:</label>
         <select v-model="positionName" id="position" required>
@@ -124,46 +126,51 @@
             v-for="position in positions"
             :key="position.name"
             :value="position.name"
+            :selected="position.name"
           >
             {{ position.name }}
           </option>
         </select>
       </div>
-
-      <button type="submit">Добавить сотрудника</button>
+      <button type="submit">Сохранить</button>
     </form>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import { toRaw } from "vue";
 import { onMounted, ref } from "vue";
 import Inputmask from "inputmask";
 
 export default {
+  props: {
+    employee: Object,
+  },
   data() {
     return {
-      isFormVisible: true, // Форма изначально видима
       employeeData: {
-        last_name: "",
-        first_name: "",
-        middle_name: "",
-        passport_number: "",
-        salary: "",
-        hire_date: "",
-        phone_number: "",
-        email: "",
-        telegram: "",
+        last_name: this.employee.last_name,
+        first_name: this.employee.first_name,
+        middle_name: this.employee.middle_name,
+        passport_number: this.employee.passport_number,
+        salary: this.employee.salary,
+        hire_date: this.employee.hire_date
+          ? new Date(this.employee.hire_date).toISOString().split("T")[0]
+          : "",
+        phone_number: this.employee.phone_number,
+        email: this.employee.email,
+        telegram: this.employee.telegram,
       },
       addressData: {
-        city: "",
-        street: "",
-        house_number: "",
+        city: this.employee.city,
+        street: this.employee.street,
+        house_number: this.employee.house_number,
       },
-      departmentName: "",
-      positionName: "",
-      departments: [],
-      positions: [],
+      departmentName: this.employee.department, // Значение для отдела по умолчанию
+      positionName: this.employee.position, // Значение для должности по умолчанию
+      departments: [], // Массив для данных отделов
+      positions: [], // Массив для данных должностей
     };
   },
   setup() {
@@ -189,10 +196,6 @@ export default {
 
     return { phoneInput, passportInput, telegramInput, emailInput };
   },
-  mounted() {
-    this.loadDepartments();
-    this.loadPositions();
-  },
   methods: {
     async loadDepartments() {
       try {
@@ -212,19 +215,24 @@ export default {
     },
     async submitForm() {
       const employeePayload = {
-        employeeData: this.employeeData,
-        addressData: this.addressData,
+        employeeData: toRaw(this.employeeData),
+        addressData: toRaw(this.addressData),
         departmentName: this.departmentName,
         positionName: this.positionName,
       };
-      this.$emit("submit", employeePayload);
-      this.closeForm;
+      this.$emit("save", employeePayload);
+      this.$emit("cancel");
     },
-    closeForm() {
-      this.$emit("cancel"); // Сообщаем родителю, что нужно закрыть форму
-    },
+  },
+  mounted() {
+    this.loadDepartments();
+    this.loadPositions();
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.close-btn:hover {
+  color: #333;
+}
+</style>

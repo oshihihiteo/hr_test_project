@@ -3,8 +3,8 @@ const db = require("../config/db/index");
 class Employee {
   static async getAll() {
     return db.any(
-      "SELECT e.id, fio(e.last_name, e.first_name, e.middle_name), e.passport_number, e.salary, " +
-        "e.hire_date, e.phone_number, e.email, e.telegram, a.city, a.street, a.house_number, " +
+      "SELECT e.id, e.last_name, e.first_name, e.middle_name, e.passport_number, e.salary, " +
+        "e.hire_date, e.phone_number, e.email, e.telegram, e.is_employed, a.city, a.street, a.house_number, " +
         "d.name AS department, p.name AS position FROM employees e " +
         "JOIN positions p ON p.id = e.position_id " +
         "JOIN departments d ON d.id = e.department_id " +
@@ -16,7 +16,7 @@ class Employee {
     return db.oneOrNone(
       "SELECT e.id, e.last_name, e.first_name, e.middle_name, e.passport_number, e.salary, " +
         "e.hire_date, e.phone_number, e.email, e.telegram, a.city, a.street, a.house_number, " +
-        "d.name AS department, p.name AS position FROM employees e " +
+        "d.name AS department, p.name AS position, e.is_employed FROM employees e " +
         "JOIN positions p ON p.id = e.position_id " +
         "JOIN departments d ON d.id = e.department_id " +
         "JOIN addresses a ON e.address_id = a.id WHERE e.id = $1",

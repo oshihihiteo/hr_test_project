@@ -1,15 +1,18 @@
 <script>
 import axios from "axios";
-import AddEmployeeForm from "@/components/AddEmployeeForm.vue"; // Импортируем новый компонент
+import AddEmployeeForm from "@/components/AddEmployeeForm.vue";
+import EmployeeCard from "@/components/EmployeeCard.vue";
 
 export default {
   components: {
-    AddEmployeeForm, // Регистрируем компонент
+    AddEmployeeForm,
+    EmployeeCard,
   },
   data() {
     return {
       employees: [],
-      showForm: false, // Флаг для отображения формы
+      showForm: false,
+      selectedEmployeeId: null,
     };
   },
   methods: {
@@ -21,15 +24,37 @@ export default {
         console.error("Ошибка при загрузке данных:", error);
       }
     },
-
+    formatDate(date) {
+      return date ? new Date(date).toISOString().split("T")[0] : "";
+    },
     async addEmployee(employee) {
       try {
-        const response = await axios.post("http://localhost:5000/create", employee);
-        this.employees.push(response.data); // Добавляем нового сотрудника в массив
-        this.showForm = false; // Закрываем форму
+        const response = await axios.post(
+          "http://localhost:5000/create",
+          employee
+        );
+        this.showForm = false;
+        this.getEmployees();
+        alert("Сотрудник добавлен!");
       } catch (error) {
         console.error("Ошибка при добавлении сотрудника:", error);
       }
+    },
+
+    showEmployeeCard(employee) {
+      this.selectedEmployeeId = employee.id;
+    },
+
+    closeEmployeeCard() {
+      this.selectedEmployeeId = null;
+    },
+
+    openForm() {
+      this.showForm = true;
+    },
+
+    closeForm() {
+      this.showForm = false;
     },
   },
   mounted() {
@@ -41,94 +66,68 @@ export default {
 <template>
   <div>
     <h2>Список сотрудников</h2>
-    <button @click="showForm = true">Добавить сотрудника</button>
 
-    <!-- Модальное окно для добавления сотрудника -->
+    <button @click="openForm">Добавить сотрудника</button>
+
     <div v-if="showForm" class="modal-overlay">
-      <AddEmployeeForm 
-        :showForm="showForm" 
-        @submit="addEmployee" 
-        @cancel="showForm = false" />
+      <AddEmployeeForm @submit="addEmployee" @cancel="closeForm" />
     </div>
 
-    <!-- Таблица сотрудников -->
-    <table border="1" v-if="employees.length > 0" :class="{ 'blurred': showForm }">
+    <table
+      border="1"
+      v-if="employees.length > 0"
+      :class="{ blurred: showForm || selectedEmployeeId }"
+    >
       <thead>
         <tr>
           <th>ФИО</th>
-          <th>Номер паспорта</th>
-          <th>Зарплата</th>
-          <th>Дата приема</th>
-          <th>Телефон</th>
-          <th>Email</th>
-          <th>Телеграм</th>
-          <th>Адрес</th>
           <th>Отдел</th>
           <th>Должность</th>
+          <th>Зарплата</th>
+          <th>Дата приема</th>
+          <th>Номер паспорта</th>
+          <th>Адрес</th>
+          <th>Контакты</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="employee in employees" :key="employee.id">
-          <td>{{ employee.fio }}</td>
-          <td>{{ employee.passport_number }}</td>
-          <td>{{ employee.salary }}</td>
-          <td>{{ employee.hire_date }}</td>
-          <td>{{ employee.phone_number }}</td>
-          <td>{{ employee.email }}</td>
-          <td>{{ employee.telegram }}</td>
-          <td>{{ employee.city + " " + employee.street + " " + employee.house_number }}</td>
+        <tr
+          v-for="employee in employees"
+          :key="employee.id"
+          @click="showEmployeeCard(employee)"
+        >
+          <td>
+            {{
+              `${employee.last_name} ${employee.first_name} ${employee.middle_name}`
+            }}
+          </td>
           <td>{{ employee.department }}</td>
           <td>{{ employee.position }}</td>
+          <td>{{ employee.salary }}</td>
+          <td>{{ formatDate(employee.hire_date) }}</td>
+          <td>{{ employee.passport_number }}</td>
+          <td>
+            {{
+              `г.${employee.city}, ул.${employee.street}, д.${employee.house_number}`
+            }}
+          </td>
+          <td>
+            {{ employee.phone_number }}<br />
+            {{ employee.email }}<br />
+            {{ employee.telegram }}
+          </td>
         </tr>
       </tbody>
     </table>
+
+    <div v-if="selectedEmployeeId" class="modal-overlay">
+      <EmployeeCard
+        :employeeId="selectedEmployeeId"
+        @close="closeEmployeeCard"
+        @update="getEmployees"
+      />
+    </div>
   </div>
 </template>
 
-<style scoped>
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-th, td {
-  padding: 8px;
-  border: 1px solid #ddd;
-  text-align: left;
-}
-th {
-  background-color: #f4f4f4;
-}
-
-/* Модальное окно */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-table.blurred {
-  filter: blur(5px); /* Размытие таблицы */
-}
-
-/* Для компонента AddEmployeeForm */
-form {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
-form div {
-  margin-bottom: 10px;
-}
-button {
-  margin-top: 10px;
-}
-</style>
+<style scoped></style>

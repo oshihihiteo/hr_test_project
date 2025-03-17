@@ -9,10 +9,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vueform/plugin-mask": "^1.0.7",
     "axios": "^1.8.3",
-    "vue": "^3.5.13"
+    "vue": "^3.5.13",
+    "vue-imask": "^7.6.1",
+    "vue-inputmask": "^0.2.1",
+    "vue-the-mask": "^0.11.1"
   },
   "devDependencies": {
+    "@types/vue-the-mask": "^0.11.5",
     "@vitejs/plugin-vue": "^5.2.1",
     "vite": "^6.2.1",
     "vite-plugin-vue-devtools": "^7.7.2"
